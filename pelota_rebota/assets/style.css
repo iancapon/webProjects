@@ -1,0 +1,15 @@
+body{
+    margin:100;
+    padding:0;
+    background-color: aquamarine;
+}
+.main-container{
+    background-color: aquamarine;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+canvas{
+    background-color: black;
+}
