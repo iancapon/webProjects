@@ -1,25 +1,39 @@
 var canvas=document.getElementById("main-canvas");
 const c=canvas.getContext("2d");
 
-canvas.width=500;
-canvas.height=500;
+canvas.width=1000;
+canvas.height=1000;
 
-c.fillStyle='rgba(255,255,255,255)';
-var x=canvas.width/2+100;
+
+var x=canvas.width/2+50;
 var y=canvas.height/2;
-var u=-1;
-var v=1;
+var u=-4;
+var v=4;
+const forma=1
 function draw(){
-    c.clearRect(0,0,innerWidth,innerHeight);
-    c.fillRect(x-5,y-5,10,10);
+    c.clearRect(0,0,canvas.width,canvas.height);
+    c.fillStyle='white';
     x+=u;
     y+=v;
-    if(x>canvas.width || x<0 ){
+    if(x+50>canvas.width || x-50<0 ){
         u*=-1
     }
-    if(y>canvas.height || y<0 ){
+    if(y+50>canvas.height || y-50<0 ){
         v*=-1
     }
-    requestAnimationFrame(draw());
+    if(forma==0){
+        
+        c.fillRect(x-10,y-10,20,20);
+    }
+    if(forma==1){
+        c.beginPath();
+        c.arc(x,y,50,0,Math.PI*2,false);
+        c.strokeStyle='white';
+        c.stroke();
+        c.fill()
+        
+        
+    }
+    requestAnimationFrame(draw);
 }
-draw();
+draw(0)
