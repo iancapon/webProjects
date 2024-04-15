@@ -1,114 +1,56 @@
-//import { Cursor } from "./Cursor.js"
+import cursor from './cursor.js'
+import { setupTablero } from "./setups.js"
+import { drawBoard } from "./onScreen.js"
+
 const canvas = document.getElementById("canvas")
 const c = canvas.getContext("2d")
 let tablero = []
 const piezas = []
-//const mano = new Cursor(0, 0, 40)
+const mano = new cursor(0, 0, canvas.width/8, tablero, c)
+const turno_de=document.getElementById("turno-de")
 
-
-function setup() {
-    canvas.width = 80 * 8
-    canvas.height = 80 * 8
-    setupTablero()
-    //mano.sqrSize = canvas.width / 8
+const setup = function () {
+    canvas.width = 60 * 8
+    canvas.height = 60 * 8
+    setupTablero(piezas, tablero)
+    
 }
-function draw() {
-    drawBoard('white', 'green')
+
+
+const draw = function () {
+    mano.sqrSize=canvas.width/8
+    drawBoard('white', 'pink', c, tablero, piezas)
+    canvas.addEventListener('mousemove', onMouseMove)
+    canvas.addEventListener('click', manejarClic)
+    mano.signal(tablero)
+    
+    if(mano.turn==1){turno_de.textContent="Turno de: Blancas"}
+    if(mano.turn==0){turno_de.textContent="Turno de: Negras"}
     requestAnimationFrame(draw)
 }
 
-function drawBoard(white, black) {
-    for (let i = 0; i < 8; i++) {
-        for (let j = 0; j < 8; j++) {
-            let color;
-            if ((i + j) % 2 == 0) {
-                color = white
-            } else {
-                color = black
-            }
-            let sqrSize = canvas.width / 8
-            if (tablero[i + j * 8] == 0) {
-                c.fillStyle = color
-                c.fillRect(i * sqrSize, j * sqrSize, sqrSize, sqrSize)
-            } else {
-                insertarImagen(i, j, sqrSize, color)
-            }
-        }
-    }
+//////////////////////////
+let clicActivo = true;
+function manejarClic() {
+    if (clicActivo) {
+        clicActivo = false
+        mano.click(tablero)
+        setTimeout(() => { clicActivo = true; console.log('Clic reactivado.') }, 50); 
+    } //----------------------------------------------- 1000 milisegundos = 1 segundo
 }
-function insertarImagen(x, y, size, bgcolor) {
-    let img = new Image()
-    img.src = piezas[tablero[x + y * 8] - 1]
-    img.onload = function () {
-        c.fillStyle = bgcolor
-        c.fillRect(x * size, y * size, size, size)
-        c.drawImage(img, x * size, y * size, size, size)
-    }
+function onMouseMove(evt) {
+    var mousePos = getMousePos(canvas, evt);
+    mano.truex = Math.floor(mousePos.x / mano.sqrSize)
+    mano.truey = Math.floor(mousePos.y / mano.sqrSize)
 }
-function setupTablero() {
-    for (let i = 0; i < 12; i++) {
-        piezas[i] = new Image()
-    }
-
-    piezas[0] = ("assets/piezas/torre_blanca.png");
-    piezas[1] = ("assets/piezas/torre_negra.png");
-    piezas[2] = ("assets/piezas/reina_blanca.png");
-    piezas[3] = ("assets/piezas/reina_negra.png");
-    piezas[4] = ("assets/piezas/peon_blanco.png");
-    piezas[5] = ("assets/piezas/peon_negro.png");
-    piezas[6] = ("assets/piezas/rey_blanco.png");
-    piezas[7] = ("assets/piezas/rey_negro.png");
-    piezas[8] = ("assets/piezas/alfil_blanco.png");
-    piezas[9] = ("assets/piezas/alfil_negro.png");
-    piezas[10] = ("assets/piezas/caballo_blanco.png");
-    piezas[11] = ("assets/piezas/caballo_negro.png");
-
-    for (let i = 0; i < 64; i++) {
-        tablero[i] = 0
-    }
-
-    for (let i = 0; i < 8; i++) {
-        let j = 1
-        tablero[i + j * 8] = 5 + 1
-        j = 6
-        tablero[i + j * 8] = 4 + 1
-
-    }
-
-    tablero[0] = 1 + 1;
-    tablero[7] = 1 + 1;
-    tablero[0 + 7 * 8] = 0 + 1;
-    tablero[7 + 7 * 8] = 0 + 1;
-    tablero[1] = 11 + 1;
-    tablero[6] = 11 + 1;
-    tablero[1 + 7 * 8] = 10 + 1;
-    tablero[6 + 7 * 8] = 10 + 1;
-    tablero[2] = 9 + 1;
-    tablero[5] = 9 + 1;
-    tablero[2 + 7 * 8] = 8 + 1;
-    tablero[5 + 7 * 8] = 8 + 1;
-    tablero[3] = 3 + 1;
-    tablero[4] = 7 + 1;
-    tablero[3 + 7 * 8] = 2 + 1;
-    tablero[4 + 7 * 8] = 6 + 1;
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
 }
 
 setup()
 draw()
 
-class Cursor{
-    /*
-    x;y;piece
-    sqrSize
-    hand
-    prevX;prevY;prevPiece*/
-    x
-    y
-    sqrSize
-    constructor(x,y,sqrSize){
-        this.x=x
-        this.y=y
-        this.sqrSize=this.sqrSize
-    }
-
-}

@@ -6,10 +6,10 @@
 
 .main-class{
     background-color: brown;
-    display: flex;
+    display:flex;
     justify-content: center;
     align-content: center;
-    height: 90vf;
+    height: 50vf;
 }
 
 canvas{
