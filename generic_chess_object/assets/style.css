@@ -1,0 +1,23 @@
+.body-class{
+    background-color: lightgreen;
+    margin:100;
+    padding:0;
+}
+
+.main-class{
+    background-color: lightgreen;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    height: 50vf;
+}
+.text-class{
+    background-color: lightgreen;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+    height: 50vf;
+}
+canvas{
+    background-color: black;
+}
