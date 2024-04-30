@@ -37,6 +37,14 @@
     })
     button.addEventListener("click",()=>{
         socket.emit("mensaje",chName.value+"::"+chat.value)
+        chat.value=""
+    })
+    chat.addEventListener("keydown",(event)=>{
+        if(event.keyCode === 13 && !event.shiftKey){
+            event.preventDefault()
+            socket.emit("mensaje",chName.value+"::"+chat.value)
+            chat.value=""
+        }
     })
     
 </script>
