@@ -1,0 +1,30 @@
+body{
+    margin:2%;
+    border-radius: 5%;
+    background-color: rgb(255, 227, 115);
+}
+
+ul{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+h1 {
+    text-shadow: 2px 2px red;
+  }
+
+  h4 {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+
+.main-class{
+    display:flex;
+    height: 50vf;
+}
+.text-class{
+    display:flex;
+    height: 50vf;
+}
+canvas{
+    background-color: black;
+}
