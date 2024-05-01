@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHATROOM</title>
+    <link rel="stylesheet" href="/chat/style.css">
+</head>
+<body >
+    <h1>CHATROOM</h1><h4 id="ccount"></h4>
+    <textarea name="" id="change-name" cols="10" rows="1">myName</textarea><br>
+    <textarea name="chat" id="chat" cols="50" rows="5"></textarea>
+    <button id="send">send</button>
+    <h4 class="chatbox">
+        <ul id="chatbox"></ul>
+    </h4>
+
+
+<script type="module">
+    const chat=document.getElementById("chat")
+    const button=document.getElementById("send")
+    const chatbox=document.getElementById("chatbox")
+    const clients_count=document.getElementById("ccount")
+    const chName=document.getElementById("change-name")
+
+    import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+
+
+    const socket= io("/chatroom") 
+    socket.on("mensaje",(data)=>{
+        const pub=document.createElement("li")
+        pub.innerText=data
+        chatbox.appendChild(pub)
+    })
+    socket.on("clients-count",(data)=>{
+        clients_count.innerText="Clientes en linea: "+data
+    })
+    button.addEventListener("click",()=>{
+        socket.emit("mensaje",chName.value+"::"+chat.value)
+        chat.value=""
+    })
+    chat.addEventListener("keydown",(event)=>{
+        if(event.keyCode === 13 && !event.shiftKey){
+            event.preventDefault()
+            socket.emit("mensaje",chName.value+"::"+chat.value)
+            chat.value=""
+        }
+    })
+    
+</script>
+</body>
+</html>
